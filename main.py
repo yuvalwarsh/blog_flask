@@ -10,14 +10,18 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 from flask_gravatar import Gravatar
 import smtplib
+import os
 
 
 def send_mail(name, email, phonenum, message):
-    MAIL ="test25082005@gmail.com"
+    MAIL = os.environ.get('MAIL')
+    PASSWORD_MAIL = os.environ.get('PASSWORD_MAIL')
+
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
-        connection.login(user=MAIL, password="test25@82@@5")
+        connection.login(user=MAIL, password=PASSWORD_MAIL)
         connection.sendmail(from_addr=MAIL, to_addrs=MAIL, msg=f"Subject: New Login to Blog \n\n Name: {name}\nEmail: {email}\nPhone Number: {phonenum}\nMessage: {message}")
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
